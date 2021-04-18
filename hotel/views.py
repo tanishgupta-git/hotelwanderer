@@ -4,6 +4,9 @@ from .forms import CreateUserForm
 from django.shortcuts import render
 from django.http import HttpResponse
 
+# For Starter Page
+def Start(request):
+    return render(request,'Hii')
 
 # For Login Form Page
 def UserLogin(request):
