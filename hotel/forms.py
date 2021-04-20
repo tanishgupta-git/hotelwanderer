@@ -4,8 +4,6 @@ from django import forms
 
 
 class CreateUserForm(UserCreationForm):
-    password =  forms.CharField(widget=forms.PasswordInput)
-    password1 = forms.CharField(widget=forms.PasswordInput)
     fullname = forms.CharField(max_length=250, required=True)
     email = forms.CharField(max_length=250, required=True)
     adharid = forms.CharField(max_length=250, required=True)
@@ -13,4 +11,4 @@ class CreateUserForm(UserCreationForm):
     permanentaddress = forms.CharField(max_length=250, required=True)
     class Meta:
         model = User
-        fields = ['username','fullname','email','adharid','mobilenumber','permanentaddress','password','password1']
+        fields = ['username','fullname','email','adharid','mobilenumber','permanentaddress','password1','password2']
