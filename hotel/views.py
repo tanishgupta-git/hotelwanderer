@@ -1,38 +1,41 @@
-from django.contrib.auth import authenticate, login,logout
+from django.contrib.auth import authenticate, login, logout
+from pyexpat.errors import messages
+
 from .models import UserProfile
 from .forms import CreateUserForm
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
+
 
 # For Starter Page
 def Start(request):
-    return render(request,'Hii')
+    return render(request, 'home.html')
+
 
 # For Login Form Page
 def UserLogin(request):
     if request.user.is_authenticated:
         return redirect('hotel:start')
-    else:       
+    else:
         if request.method == 'POST':
             username = request.POST.get('username')
             password = request.POST.get('password')
 
-            user = authenticate(request,username=username,password=password)
+            user = authenticate(request, username=username, password=password)
 
             if user is not None:
-                login(request,user)
+                login(request, user)
                 return redirect('hotel:start')
             else:
-                messages.info(request,'Username or Password is incorrect')
+                messages.info(request, 'Username or Password is incorrect')
 
-        return render(request,'hotel/login.html')
+        return render(request, 'login.html')
 
 
 #  Logout function
 def UserLogout(request):
     logout(request)
     return redirect('hotel:login')
-
 
 
 # For User Authentication
@@ -45,12 +48,13 @@ def UserRegister(request):
             form = CreateUserForm(request.POST)
             if form.is_valid():
                 user = form.save(commit=False)
+                user.save(using = 'hotelwanderer')
                 password = form.cleaned_data["password"]
                 password1 = form.cleaned_data["password1"]
                 fullname = form.cleaned_data["fullname"]
                 email = form.cleaned_data["email"]
                 adharid = form.cleaned_data["adharid"]
-                mobilenumber = form.cleaned_data["mobilenumber"] 
+                mobilenumber = form.cleaned_data["mobilenumber"]
                 permanentaddress = form.changed_data["permanentaddress"]
                 if password == password1:
                     user.set_password(password)
@@ -62,10 +66,11 @@ def UserRegister(request):
                     userprofile.aadharid = adharid
                     userprofile.mobilenumber = mobilenumber
                     userprofile.permanentaddress = permanentaddress
+                    print(userprofile)
                     userprofile.save()
-                    messages.success(request,"Account created successfully " )
+                    messages.success(request, "Account created successfully ")
                     return redirect('hotel:login')
                 else:
-                    messages.success(request,"Password Doesn't Match")
+                    messages.success(request, "Password Doesn't Match")
         else:
-            return render(request,'hotel/registration.html',{form:form})
+            return render(request, 'signup.html', {form: form})
