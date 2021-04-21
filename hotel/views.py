@@ -25,6 +25,8 @@ def UserLogin(request):
 
             if user is not None:
                 login(request, user)
+                userdata = UserProfile.objects.get(user=user)
+                print(userdata)
                 return redirect('hotel:start')
             else:
                 messages.info(request, 'Username or Password is incorrect')
@@ -46,18 +48,18 @@ def UserRegister(request):
         form = CreateUserForm()
         if request.method == "POST":
             form = CreateUserForm(request.POST)
+            print(form.is_valid())
             if form.is_valid():
                 user = form.save(commit=False)
-                user.save(using = 'hotelwanderer')
-                password = form.cleaned_data["password"]
                 password1 = form.cleaned_data["password1"]
+                password2 = form.cleaned_data["password2"]
                 fullname = form.cleaned_data["fullname"]
                 email = form.cleaned_data["email"]
                 adharid = form.cleaned_data["adharid"]
                 mobilenumber = form.cleaned_data["mobilenumber"]
-                permanentaddress = form.changed_data["permanentaddress"]
-                if password == password1:
-                    user.set_password(password)
+                permanentaddress = form.cleaned_data["permanentaddress"]
+                if password1 == password2:
+                    user.set_password(password1)
                     user.save()
                     userprofile = UserProfile()
                     userprofile.user = user
@@ -66,11 +68,12 @@ def UserRegister(request):
                     userprofile.aadharid = adharid
                     userprofile.mobilenumber = mobilenumber
                     userprofile.permanentaddress = permanentaddress
-                    print(userprofile)
                     userprofile.save()
-                    messages.success(request, "Account created successfully ")
+                    print(userprofile)
                     return redirect('hotel:login')
                 else:
                     messages.success(request, "Password Doesn't Match")
+            else:
+                return render(request, 'signup.html', {form: form})
         else:
             return render(request, 'signup.html', {form: form})
