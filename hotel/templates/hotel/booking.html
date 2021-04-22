@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Your Room</title>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <header>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    </header>
+  <div class="container-fluid">
+    <a href="/" class="navbar-brand">Hotel<b>Wanderer</b></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link" href="/login/">Login</a>
+        <a class="nav-link" href="/signup/">Sign Up</a>
+        <a class="nav-link" href="#">Contact Us</a>
+        <a class="nav-link" href="booking">Book Now</a>
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Dashboard</a>
+      </div>
+    </div>
+  </div>
+</nav>
+  <h1 class="text-center my-3">Rooms Categories</h1>
+  <div class="container">
+      {% load static %}
+      <div class="row my-5 py-5">
+        <div class="col-lg-5 col-12">
+        <h3>1. Basic</h3>
+        <p class="mt-3">A room with the facility of double bed.It has an attached bathroom, a small dressing table, a small bedside table, and a small writing table. Sometimes it has a single chair.
+        </p>
+        <p class="h6 mt-4">Extra Facilities</p>
+        <p>
+          <span class="btn btn-light m-2">Wifi</span>
+          <span class="btn btn-light m-2">AC</span>
+          <span class="btn btn-light m-2">TV</span>
+        </p>
+        <p class="h5 mt-4">Price - <span class="text-secondary"> Rs. 1200/ night</span></p>
+        <p class="h5 text-secondary mt-4">Availibility - {{ basicRoomAvailable }}</p>
+        <a  class="btn btn-secondary mt-4" href="/bookingdetails">Book Now</a>
+        </div>
+        <div class="col-lg-7 col-12 my-2">
+        <img class="img-fluid" src="{% static 'hotel/img/bedroombasic.png' %}" alt="Basic Room Image">
+        </div>
+      </div>
+
+
+      <div class="row my-5 py-5">
+        <div class="col-lg-5 col-12">
+        <h3>2. Medium</h3>
+        <p  class="mt-3">A room with the facility of double bed. There are two variants in this type depending upon the size of the bed King Double Room (with king size double bed) Queen Double Room (with queen size double bed) It is equipped with adequate furniture such as dressing table and a writing table.</p>
+        <p class="h6 mt-4">Extra Facilities</p>
+        <p>
+          <span class="btn btn-light m-2">Gym</span>
+          <span class="btn btn-light m-2">Wifi</span>
+          <span class="btn btn-light m-2">AC</span>
+          <span class="btn btn-light m-2">TV</span>
+        </p>
+        <p class="h5 mt-4">Price - <span class="text-secondary"> Rs. 2000/ night</span></p>
+        <p class="h5 text-secondary mt-4">Availibility - {{ mediumRoomAvailable }} </p>
+        <a  class="btn btn-secondary mt-4" href="/bookingdetails">Book Now</a>
+        </div>
+        <div class="col-lg-7 col-12 my-2">
+        <img class="img-fluid" src="{% static 'hotel/img/bedroommedium.png' %}" alt="Medium Room Image">
+        </div>
+      </div>
+     
+
+
+      <div class="row my-5 py-5">
+        <div class="col-lg-5 col-12">
+        <h3>3. Advanced</h3>
+        <p  class="mt-3">This room provides double bed.It has a seating area, digital safe, minibar and luxurious duck down bedding. This room can be configured with either 2 single beds or zip and linked to provide a large double bed.
+        </p>
+        <p class="h6 mt-4">Extra Facilities</p>
+        <p>
+          <span class="btn btn-light m-2">Balcony View</span>
+          <span class="btn btn-light m-2">Gym</span>
+          <span class="btn btn-light m-2">Wifi</span>
+          <span class="btn btn-light m-2">AC</span>
+          <span class="btn btn-light m-2">TV</span>
+        </p>
+        <p class="h5 mt-4">Price - <span class="text-secondary"> Rs. 3000/ night</span></p>
+        <p class="h5 text-secondary mt-4">Availibility - {{ advancedRoomAvailable }}</p>
+        <a class="btn btn-secondary mt-4" href="/bookingdetails">Book Now</a>
+        </div>
+        <div class="col-lg-7 col-12 my-2">
+        <img class="img-fluid" src="{% static 'hotel/img/bedroomadvanced.png' %}" alt="Advanced Room Image" >
+      </div>
+      </div>
+
+
+
+  </div>
+</body>
+</html>

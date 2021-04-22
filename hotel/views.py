@@ -9,7 +9,7 @@ from django.http import HttpResponse
 
 # For Starter Page
 def Start(request):
-    return render(request, 'home.html')
+    return render(request, 'hotel/home.html')
 
 
 # For Login Form Page
@@ -31,7 +31,7 @@ def UserLogin(request):
             else:
                 messages.info(request, 'Username or Password is incorrect')
 
-        return render(request, 'login.html')
+        return render(request, 'hotel/login.html')
 
 
 #  Logout function
@@ -74,15 +74,15 @@ def UserRegister(request):
                 else:
                     messages.success(request, "Password Doesn't Match")
             else:
-                return render(request, 'signup.html', {form: form})
+                return render(request, 'hotel/signup.html', {form: form})
         else:
-            return render(request, 'signup.html', {form: form})
+            return render(request, 'hotel/signup.html', {form: form})
 
 
 def bookingMenu(request):
     params = {'basicRoomAvailable':10,'mediumRoomAvailable':10,'advancedRoomAvailable':10}
-    return render(request,'booking.html',params)
+    return render(request,'hotel/booking.html',params)
 
 
 def bookingDetails(request):
-    return render(request,'bookingdetails.html')
+    return render(request,'hotel/bookingdetails.html')
