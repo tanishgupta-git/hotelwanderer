@@ -77,3 +77,12 @@ def UserRegister(request):
                 return render(request, 'signup.html', {form: form})
         else:
             return render(request, 'signup.html', {form: form})
+
+
+def bookingMenu(request):
+    params = {'basicRoomAvailable':10,'mediumRoomAvailable':10,'advancedRoomAvailable':10}
+    return render(request,'booking.html',params)
+
+
+def bookingDetails(request):
+    return render(request,'bookingdetails.html')
