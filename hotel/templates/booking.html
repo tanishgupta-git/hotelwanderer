@@ -42,7 +42,7 @@
         </p>
         <p class="h5 mt-4">Price - <span class="text-secondary"> Rs. 1200/ night</span></p>
         <p class="h5 text-secondary mt-4">Availibility - {{ basicRoomAvailable }}</p>
-        <a  class="btn btn-secondary mt-4" href="/bookingdetails">Book Now</a>
+        <a  class="btn btn-secondary mt-4" href="{% url 'hotel:bookingdetails' 'basic' %}">Book Now</a>
         </div>
         <div class="col-lg-7 col-12 my-2">
         <img class="img-fluid" src="{% static 'hotel/img/bedroombasic.png' %}" alt="Basic Room Image">
@@ -63,7 +63,7 @@
         </p>
         <p class="h5 mt-4">Price - <span class="text-secondary"> Rs. 2000/ night</span></p>
         <p class="h5 text-secondary mt-4">Availibility - {{ mediumRoomAvailable }} </p>
-        <a  class="btn btn-secondary mt-4" href="/bookingdetails">Book Now</a>
+        <a  class="btn btn-secondary mt-4" href="{% url 'hotel:bookingdetails' 'medium' %}">Book Room</a>
         </div>
         <div class="col-lg-7 col-12 my-2">
         <img class="img-fluid" src="{% static 'hotel/img/bedroommedium.png' %}" alt="Medium Room Image">
@@ -87,7 +87,7 @@
         </p>
         <p class="h5 mt-4">Price - <span class="text-secondary"> Rs. 3000/ night</span></p>
         <p class="h5 text-secondary mt-4">Availibility - {{ advancedRoomAvailable }}</p>
-        <a class="btn btn-secondary mt-4" href="/bookingdetails">Book Now</a>
+        <a class="btn btn-secondary mt-4" href="{% url 'hotel:bookingdetails' 'advanced' %}">Book Now</a>
         </div>
         <div class="col-lg-7 col-12 my-2">
         <img class="img-fluid" src="{% static 'hotel/img/bedroomadvanced.png' %}" alt="Advanced Room Image" >

@@ -1,7 +1,9 @@
 from django.contrib.auth import authenticate, login, logout
 from pyexpat.errors import messages
+from datetime import datetime
+from datetime import timedelta
 
-from .models import UserProfile
+from .models import UserProfile, RoomCategory, Bill, Room, Booking
 from .forms import CreateUserForm
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
@@ -9,7 +11,7 @@ from django.http import HttpResponse
 
 # For Starter Page
 def Start(request):
-    return render(request, 'hotel/home.html')
+    return render(request, 'home.html')
 
 
 # For Login Form Page
@@ -31,7 +33,7 @@ def UserLogin(request):
             else:
                 messages.info(request, 'Username or Password is incorrect')
 
-        return render(request, 'hotel/login.html')
+        return render(request, 'login.html')
 
 
 #  Logout function
@@ -74,15 +76,73 @@ def UserRegister(request):
                 else:
                     messages.success(request, "Password Doesn't Match")
             else:
-                return render(request, 'hotel/signup.html', {form: form})
+                return render(request, 'signup.html', {form: form})
         else:
-            return render(request, 'hotel/signup.html', {form: form})
+            return render(request, 'signup.html', {form: form})
 
 
 def bookingMenu(request):
-    params = {'basicRoomAvailable':10,'mediumRoomAvailable':10,'advancedRoomAvailable':10}
-    return render(request,'hotel/booking.html',params)
+    basic_available = 0
+    medium_available = 0
+    advanced_available = 0
+
+    rooms = Room.objects.filter(room_category_id="basic")
+    for room in rooms:
+        if (room.is_booked == False):
+            basic_available = basic_available + 1
+
+    rooms = Room.objects.filter(room_category_id="medium")
+    for room in rooms:
+        if (room.is_booked == False):
+            medium_available = medium_available + 1
+
+    rooms = Room.objects.filter(room_category_id="advanced")
+    for room in rooms:
+        if (room.is_booked == False):
+            advanced_available = advanced_available + 1
+
+    params = {'basicRoomAvailable': basic_available, 'mediumRoomAvailable': medium_available,
+              'advancedRoomAvailable': advanced_available, }
+    return render(request, 'booking.html', params)
 
 
-def bookingDetails(request):
-    return render(request,'hotel/bookingdetails.html')
+def bookingDetails(request, roomType):
+    user = UserProfile.objects.get(id=1)
+    email = user.email
+    room_category = RoomCategory.objects.get(category_name=roomType)
+    rooms = Room.objects.filter(room_category_id=roomType)
+    room = rooms[0]
+    for x in rooms:
+        if (x.is_booked != True):
+            room = x
+            break
+
+    params = {'user': user, 'room': room_category, 'room1': room}
+
+    # this peice of code will book the room
+    # bill = Bill()
+    # bill.user_name = user.fullname
+    # bill.amount = room_category.price
+    # bill.transaction_id = "12345"
+    # bill.billing_date = datetime.now()
+    # bill.save()
+    # booking = Booking()
+    # booking.checkin_time = datetime.now()
+    # booking.checkout_time = (datetime.now() + timedelta(days=1))
+    # booking.bill_id_id = bill.id
+    # booking.room_id_id = room.id
+    # booking.user_id_id = user.id
+    # booking.save()
+    # room1 = Room()
+    # room1.is_booked = True
+    # room1.id = room.id
+    # room1.room_category_id = room.room_category_id
+    # room1.save()
+
+    # this peice of code will book the room
+
+    return render(request, 'bookingdetails.html', params)
+
+
+def dashboard(request):
+    return render(request, 'dashboard.html')
