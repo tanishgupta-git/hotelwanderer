@@ -107,7 +107,7 @@ def bookingMenu(request):
 
 
 def bookingDetails(request, roomType):
-    user = UserProfile.objects.get(id=1)
+    user = UserProfile.objects.get(user_id=request.user.id)
     email = user.email
     room_category = RoomCategory.objects.get(category_name=roomType)
     rooms = Room.objects.filter(room_category_id=roomType)
@@ -146,3 +146,30 @@ def bookingDetails(request, roomType):
 
 def dashboard(request):
     return render(request, 'dashboard.html')
+
+def bookfinal(request,roomType):
+    # this peice of code will book the room
+    if request.method == 'POST':
+        user = UserProfile.objects.get(user_id=request.user.id)
+        room_category = RoomCategory.objects.get(category_name=roomType)
+        rooms = Room.objects.filter(room_category_id=roomType)
+        room = rooms[0]
+        bill = Bill()
+        bill.user_name = user.fullname
+        bill.amount = room_category.price
+        bill.transaction_id = "12345"
+        bill.billing_date = datetime.now()
+        bill.save()
+        booking = Booking()
+        booking.checkin_time = datetime.now()
+        booking.checkout_time = (datetime.now() + timedelta(days=1))
+        booking.bill_id_id = bill.id
+        booking.room_id_id = room.id
+        booking.user_id_id = user.id
+        booking.save()
+        room1 = Room()
+        room1.is_booked = True
+        room1.id = room.id
+        room1.room_category_id = room.room_category_id
+        room1.save()
+        return render(request, 'dashboard.html')
