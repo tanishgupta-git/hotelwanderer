@@ -11,7 +11,8 @@ from django.http import HttpResponse
 
 # For Starter Page
 def Start(request):
-    return render(request, 'home.html')
+    params = { 'isuserAuth' : request.user.is_authenticated }
+    return render(request, 'hotel/home.html',params)
 
 
 # For Login Form Page
@@ -33,7 +34,7 @@ def UserLogin(request):
             else:
                 messages.info(request, 'Username or Password is incorrect')
 
-        return render(request, 'login.html')
+        return render(request, 'hotel/login.html')
 
 
 #  Logout function
@@ -76,9 +77,9 @@ def UserRegister(request):
                 else:
                     messages.success(request, "Password Doesn't Match")
             else:
-                return render(request, 'signup.html', {form: form})
+                return render(request, 'hotel/signup.html', {form: form})
         else:
-            return render(request, 'signup.html', {form: form})
+            return render(request, 'hotel/signup.html', {form: form})
 
 
 def bookingMenu(request):
@@ -103,7 +104,7 @@ def bookingMenu(request):
 
     params = {'basicRoomAvailable': basic_available, 'mediumRoomAvailable': medium_available,
               'advancedRoomAvailable': advanced_available, }
-    return render(request, 'booking.html', params)
+    return render(request, 'hotel/booking.html', params)
 
 
 def bookingDetails(request, roomType):
@@ -119,29 +120,7 @@ def bookingDetails(request, roomType):
 
     params = {'user': user, 'room': room_category, 'room1': room}
 
-    # this peice of code will book the room
-    # bill = Bill()
-    # bill.user_name = user.fullname
-    # bill.amount = room_category.price
-    # bill.transaction_id = "12345"
-    # bill.billing_date = datetime.now()
-    # bill.save()
-    # booking = Booking()
-    # booking.checkin_time = datetime.now()
-    # booking.checkout_time = (datetime.now() + timedelta(days=1))
-    # booking.bill_id_id = bill.id
-    # booking.room_id_id = room.id
-    # booking.user_id_id = user.id
-    # booking.save()
-    # room1 = Room()
-    # room1.is_booked = True
-    # room1.id = room.id
-    # room1.room_category_id = room.room_category_id
-    # room1.save()
-
-    # this peice of code will book the room
-
-    return render(request, 'bookingdetails.html', params)
+    return render(request, 'hotel/bookingdetails.html', params)
 
 
 def dashboard(request):
@@ -157,7 +136,7 @@ def bookfinal(request,roomType):
         bill = Bill()
         bill.user_name = user.fullname
         bill.amount = room_category.price
-        bill.transaction_id = "12345"
+        bill.transaction_id = request.POST.get('transactionId')
         bill.billing_date = datetime.now()
         bill.save()
         booking = Booking()
@@ -172,4 +151,4 @@ def bookfinal(request,roomType):
         room1.id = room.id
         room1.room_category_id = room.room_category_id
         room1.save()
-        return render(request, 'dashboard.html')
+        return render(request, 'hotel/dashboard.html')
