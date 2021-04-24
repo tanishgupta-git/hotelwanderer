@@ -11,8 +11,9 @@ from django.http import HttpResponse
 
 # For Starter Page
 def Start(request):
-    params = { 'isuserAuth' : request.user.is_authenticated }
-    return render(request, 'hotel/home.html',params)
+    params = {'isuserAuth': request.user.is_authenticated}
+    userid = request.user.id
+    return render(request, 'hotel/home.html', params)
 
 
 # For Login Form Page
@@ -109,7 +110,9 @@ def bookingMenu(request):
 
 def bookingDetails(request, roomType):
     user = UserProfile.objects.get(user_id=request.user.id)
-    email = user.email
+    bookings = Booking.objects.filter(user_id_id=user.id)
+    if bookings is not None:
+        return HttpResponse("You can't book more than one room")
     room_category = RoomCategory.objects.get(category_name=roomType)
     rooms = Room.objects.filter(room_category_id=roomType)
     room = rooms[0]
@@ -124,15 +127,33 @@ def bookingDetails(request, roomType):
 
 
 def dashboard(request):
-    return render(request, 'dashboard.html')
+    userid = (request.user.id - 1)
+    booking = Booking.objects.get(user_id_id=userid)
+    billid = booking.bill_id_id
+    bill = Bill.objects.get(id=billid)
+    roomid = booking.room_id_id
+    room = Room.objects.get(id=roomid)
+    roomCategoryid = room.room_category_id
+    roomCategory = RoomCategory.objects.get(category_name=roomCategoryid)
+    params = {'booking': booking, 'room': room, 'roomCategory': roomCategory, 'bill': bill}
+    if (datetime.now() == booking.checkout_time):
+        query = f'UPDATE hotel_room SET is_booked = 0 WHERE id = {roomid}'
+        room.objects.raw(query)
+        return HttpResponse("Your Booking has expired")
+    return render(request, 'hotel/dashboard.html', params)
 
-def bookfinal(request,roomType):
+
+def bookfinal(request, roomType):
     # this peice of code will book the room
     if request.method == 'POST':
         user = UserProfile.objects.get(user_id=request.user.id)
         room_category = RoomCategory.objects.get(category_name=roomType)
         rooms = Room.objects.filter(room_category_id=roomType)
         room = rooms[0]
+        for x in rooms:
+            if (x.is_booked != True):
+                room = x
+                break
         bill = Bill()
         bill.user_name = user.fullname
         bill.amount = room_category.price
@@ -141,7 +162,8 @@ def bookfinal(request,roomType):
         bill.save()
         booking = Booking()
         booking.checkin_time = datetime.now()
-        booking.checkout_time = (datetime.now() + timedelta(days=1))
+        # booking.checkout_time = (datetime.now() + timedelta(days=1))
+        booking.checkout_time = datetime.now()
         booking.bill_id_id = bill.id
         booking.room_id_id = room.id
         booking.user_id_id = user.id
@@ -152,3 +174,7 @@ def bookfinal(request,roomType):
         room1.room_category_id = room.room_category_id
         room1.save()
         return render(request, 'hotel/dashboard.html')
+
+
+def contactus(request):
+    return render(request, 'hotel/contactus.html')

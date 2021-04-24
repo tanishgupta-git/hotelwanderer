@@ -9,5 +9,6 @@ urlpatterns = [
     path('booking/',views.bookingMenu,name='booking'),
     path('bookingdetails/<roomType>/',views.bookingDetails,name='bookingdetails'),
     path('dashboard/',views.dashboard,name='dashboard'),
+    path('contactus/',views.contactus,name='contactus'),
     path('bookfinal/<roomType>/',views.bookfinal,name='bookfinal')
 ]
