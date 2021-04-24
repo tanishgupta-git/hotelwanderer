@@ -30,48 +30,45 @@
         </div>
     </div>
 </nav>
-Following are the details of your room booking -->
-<br>
-<br>
-<br>
-<div align="center">
+<p class="h3 container my-3">Following are the details of your room booking</p>
+<div class="container">
 
-    <form>
+    <p><span class="text-secondary">User id -</span> {{ user.id }}</p>
+   
+    <p><span class="text-secondary">Username -</span> {{ user.user }}</p>
+   
+    <p><span class="text-secondary">Name -</span> {{ user.fullname }}</p>
 
-    User id - {{ user.id }}
-    <br>
-    username - {{ user.user }}
-    <br>
-    name - {{ user.fullname }}
-    <br>
-    email - {{ user.email }}
-    <br>
-    adhar id - {{ user.aadharid }}
-    <br>
-    mobile number - {{ user.mobilenumber }}
-    <br>
-    address - {{ user.permanentaddress }}
-    <br>
-    <br>
-    Room type - {{ room.category_name }}
-    <br>
-    availibility of ac - {{ room.ac }}
-    <br>
-    availibility of wifi - {{ room.wifi }}
-    <br>
-    availibility of gym - {{ room.gym }}
-    <br>
-    availibility of balcony - {{ room.balcony }}
-    <br>
-    Total payable amount - {{ room.price }} INR
-    <br>
-    <br>
-    <a type="button" class="btn btn-primary" href="/dashboard">Book Now</a>
-    <br>
-    {{ room1.id }}
+    <p><span class="text-secondary">Email -</span> {{ user.email }}</p>
+
+    <p><span class="text-secondary">Adhar id -</span> {{ user.aadharid }}</p>
+
+    <p><span class="text-secondary">Mobile number -</span> {{ user.mobilenumber }}</p>
+
+    <p><span class="text-secondary">Address -</span> {{ user.permanentaddress }}</p>
 
 
+    <p><span class="text-secondary">Room type -</span> {{ room.category_name }}</p>
+
+    <p><span class="text-secondary">Availibility of ac -</span> {{ room.ac }}</p>
+    
+    <p><span class="text-secondary">Availibility of wifi -</span> {{ room.wifi }}</p>
+
+    <p><span class="text-secondary">Availibility of gym -</span> {{ room.gym }}</p>
+    
+    <p><span class="text-secondary">Availibility of balcony -</span> {{ room.balcony }}</p>
+
+    <p><span class="h4 text-secondary">Payable amount -</span> {{ room.price }} INR</p>
+
+    <form action="{% url 'hotel:bookfinal' room.category_name %}" method="POST">
+        {% csrf_token %}
+        <div class="col-lg-5 col-12 mb-3">
+          <label  for="exampleInputEmail1" class="form-label">Transaction Id:</label>
+          <input type="text" class="form-control" name="transactionId" id="exampleInputEmail1"/>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Book Now">
     </form>
+
 
 </div>
 
