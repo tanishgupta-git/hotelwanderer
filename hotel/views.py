@@ -41,7 +41,7 @@ def UserLogin(request):
 #  Logout function
 def UserLogout(request):
     logout(request)
-    return redirect('hotel:login')
+    return redirect('hotel:start')
 
 
 # For User Authentication
@@ -157,13 +157,17 @@ def bookfinal(request, roomType):
         bill = Bill()
         bill.user_name = user.fullname
         bill.amount = room_category.price
-        bill.transaction_id = request.POST.get('transactionId')
+        transaction_id = request.POST.get('transactionId')
+        bills = Bill.objects.all()
+        for bill1 in bills:
+            if bill1.transaction_id == transaction_id:
+                return HttpResponse("Error: Transaction id repeated")
+        bill.transaction_id = transaction_id
         bill.billing_date = datetime.now()
         bill.save()
         booking = Booking()
         booking.checkin_time = datetime.now()
-        # booking.checkout_time = (datetime.now() + timedelta(days=1))
-        booking.checkout_time = datetime.now()
+        booking.checkout_time = (datetime.now() + timedelta(days=1))
         booking.bill_id_id = bill.id
         booking.room_id_id = room.id
         booking.user_id_id = user.id
