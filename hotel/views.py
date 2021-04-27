@@ -111,8 +111,8 @@ def bookingMenu(request):
 def bookingDetails(request, roomType):
     user = UserProfile.objects.get(user_id=request.user.id)
     bookings = Booking.objects.filter(user_id_id=user.id)
-    if bookings is not None:
-        return HttpResponse("You can't book more than one room")
+    # if bookings is not None:
+    #     return HttpResponse("You can't book more than one room")
     room_category = RoomCategory.objects.get(category_name=roomType)
     rooms = Room.objects.filter(room_category_id=roomType)
     room = rooms[0]
@@ -136,9 +136,10 @@ def dashboard(request):
     roomCategoryid = room.room_category_id
     roomCategory = RoomCategory.objects.get(category_name=roomCategoryid)
     params = {'booking': booking, 'room': room, 'roomCategory': roomCategory, 'bill': bill}
-    if (datetime.now() == booking.checkout_time):
-        query = f'UPDATE hotel_room SET is_booked = 0 WHERE id = {roomid}'
-        room.objects.raw(query)
+    current_time_stamp = datetime.now().timestamp()
+    checkout_time_stamp = booking.checkout_time.timestamp()
+    if (current_time_stamp > checkout_time_stamp):
+        Room.objects.filter(id=roomid).update(is_booked=0)
         return HttpResponse("Your Booking has expired")
     return render(request, 'hotel/dashboard.html', params)
 
