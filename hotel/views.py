@@ -111,8 +111,8 @@ def bookingMenu(request):
 def bookingDetails(request, roomType):
     user = UserProfile.objects.get(user_id=request.user.id)
     bookings = Booking.objects.filter(user_id_id=user.id)
-    # if bookings is not None:
-    #     return HttpResponse("You can't book more than one room")
+    if bookings is not None:
+        return HttpResponse("You can't book more than one room")
     room_category = RoomCategory.objects.get(category_name=roomType)
     rooms = Room.objects.filter(room_category_id=roomType)
     room = rooms[0]
